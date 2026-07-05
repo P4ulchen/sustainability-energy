@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Deutschsprachiges Double-Materiality- und VSME-Relevanzassessment für KMU.">
-  <title>Doppelte Wesentlichkeit &amp; VSME | Dammann Advisory</title>
+  <meta name="description" content="Deutschsprachiger VSME-Readiness-Check für KMU mit Modulwahl, Anwendbarkeitsprüfung und Datenplan.">
+  <title>VSME Readiness-Check | Dammann Advisory</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="assessment.css">
 </head>
@@ -13,7 +13,7 @@
   <header class="assessment-header">
     <a class="assessment-brand" href="index.html" aria-label="Zur Beratungswebsite">
       <span class="brand-mark" aria-hidden="true"><i></i><i></i></span>
-      <span><small>Dammann Sustainability &amp; Energy</small><strong>Doppelte Wesentlichkeit &amp; VSME</strong></span>
+      <span><small>Dammann Sustainability &amp; Energy</small><strong>VSME Readiness-Check</strong></span>
     </a>
     <div class="assessment-header-actions">
       <span id="saveStatus" class="save-status" aria-live="polite">Lokal gespeichert</span>
@@ -40,8 +40,8 @@
       </section>
 
       <section class="setup-card">
-        <p class="mini-label">02 · Informationsbedarf</p>
-        <h2>Wer fragt ESG-Daten an?</h2>
+        <p class="mini-label">02 · Modulwahl</p>
+        <h2>Wer nutzt Ihre VSME-Daten?</h2>
         <label class="choice"><input id="driverBanks" type="checkbox" checked><span><strong>Banken &amp; Finanzierung</strong><small>Kredite, Fördermittel, Investitionen</small></span></label>
         <label class="choice"><input id="driverCustomers" type="checkbox" checked><span><strong>Kunden &amp; Lieferkette</strong><small>Fragebögen und Konzernanforderungen</small></span></label>
         <label class="choice"><input id="driverTenders" type="checkbox"><span><strong>Ausschreibungen</strong><small>Öffentliche oder private Vergaben</small></span></label>
@@ -49,15 +49,15 @@
       </section>
 
       <section class="setup-card compact-card">
-        <p class="mini-label">03 · Schwellenwert</p>
-        <h2>Relevanzschwelle</h2>
-        <p>Ein Thema gilt als relevant, wenn mindestens eine Perspektive den Schwellenwert erreicht.</p>
+        <p class="mini-label">03 · Interne Priorisierung</p>
+        <h2>Arbeitsschwelle</h2>
+        <p>Die Schwelle priorisiert Ihre Datenerhebung. Sie entscheidet nicht darüber, welche VSME-Angaben zum gewählten Modul gehören.</p>
         <div class="threshold-row"><input id="threshold" type="range" min="2" max="5" step="0.5" value="3"><output id="thresholdOut">3,0</output></div>
       </section>
 
       <section class="setup-card info-card">
         <p class="mini-label">Einordnung</p>
-        <p>Der VSME verlangt keine formelle Wesentlichkeitsanalyse. Dieses Tool nutzt die doppelte Perspektive als freiwillige Entscheidungshilfe und prüft zusätzlich die „falls anwendbar“-Logik des Standards.</p>
+        <p>Der VSME verlangt keine formelle Wesentlichkeitsanalyse. Das Basis-Modul umfasst B1–B11; das Comprehensive-Modul ergänzt C1–C9. Einzelne Angaben werden nur ausgelassen, wenn sie für das Unternehmen nicht anwendbar sind. Die Bewertung unten dient allein der internen Reihenfolge.</p>
       </section>
       <button id="resetBtn" class="reset-button" type="button">Assessment zurücksetzen</button>
     </aside>
@@ -65,8 +65,8 @@
     <section class="assessment-workspace">
       <div class="assessment-toolbar">
         <nav class="assessment-tabs" aria-label="Assessment-Bereiche">
-          <button class="assessment-tab active" type="button" data-view="assessmentView">Assessment</button>
-          <button class="assessment-tab" type="button" data-view="resultView">VSME-Ergebnis</button>
+          <button class="assessment-tab active" type="button" data-view="assessmentView">Readiness-Check</button>
+          <button class="assessment-tab" type="button" data-view="resultView">Modul &amp; Datenplan</button>
           <button class="assessment-tab" type="button" data-view="methodView">Methodik</button>
         </nav>
         <div class="export-actions">
@@ -77,26 +77,26 @@
 
       <section id="assessmentView" class="assessment-view active">
         <div class="assessment-intro">
-          <div><p class="mini-label">Doppelte Perspektive</p><h1>Welche Nachhaltigkeitsthemen sind für Ihr KMU relevant?</h1></div>
-          <p>Bewerten Sie Auswirkungen auf Mensch und Umwelt sowie finanzielle Chancen und Risiken. Das Ergebnis ordnet passende VSME-Angaben zu.</p>
+          <div><p class="mini-label">VSME-Anwendbarkeit &amp; Datenreife</p><h1>Welche VSME-Daten kann Ihr KMU belastbar berichten?</h1></div>
+          <p>Prüfen Sie Unternehmensbezug und Nachweise. Die doppelte Perspektive hilft zusätzlich, die Datenerhebung sinnvoll zu priorisieren.</p>
         </div>
 
         <div class="overview-grid">
           <section class="matrix-card">
-            <div class="card-heading"><div><p class="mini-label">Relevanzmatrix</p><h2>Auswirkung × finanzielle Relevanz</h2></div><div class="matrix-legend"><span><i class="legend-dot relevant"></i>Relevant</span><span><i class="legend-dot observe"></i>Beobachten</span><span><i class="legend-dot not-applicable"></i>Nicht anwendbar</span></div></div>
+            <div class="card-heading"><div><p class="mini-label">Priorisierungsmatrix</p><h2>Impact × finanzielle Priorität</h2></div><div class="matrix-legend"><span><i class="legend-dot relevant"></i>Priorisiert</span><span><i class="legend-dot observe"></i>Nachrangig</span><span><i class="legend-dot not-applicable"></i>Nicht anwendbar</span></div></div>
             <canvas id="matrixCanvas" width="1080" height="680" aria-label="Matrix der Nachhaltigkeitsthemen"></canvas>
           </section>
           <aside class="assessment-summary">
             <p class="mini-label">Zwischenstand</p>
-            <h2>Ihre Einordnung</h2>
-            <dl class="assessment-stats"><div><dt>Themen</dt><dd id="topicCount">0</dd></div><div><dt>Relevant</dt><dd id="relevantCount">0</dd></div><div><dt>Offen</dt><dd id="openCount">0</dd></div></dl>
+            <h2>Ihre VSME-Readiness</h2>
+            <dl class="assessment-stats"><div><dt>Datenfelder</dt><dd id="topicCount">0</dd></div><div><dt>Eingeplant</dt><dd id="relevantCount">0</dd></div><div><dt>Anwendbarkeit offen</dt><dd id="openCount">0</dd></div></dl>
             <div class="progress-block"><div><span>Bearbeitungsstand</span><strong id="progressText">0 %</strong></div><progress id="progressBar" max="100" value="0"></progress></div>
-            <h3>Prioritäre Themen</h3><ol id="priorityList" class="priority-list"></ol>
-            <button id="showResultBtn" type="button">VSME-Empfehlung anzeigen →</button>
+            <h3>Prioritäre Datenfelder</h3><ol id="priorityList" class="priority-list"></ol>
+            <button id="showResultBtn" type="button">Modul und Datenplan anzeigen →</button>
           </aside>
         </div>
 
-        <div class="topics-heading"><div><p class="mini-label">Themenbewertung</p><h2>12 Themenfelder bewerten</h2></div><p>Die voreingestellten Werte sind ein Startpunkt und sollten durch interne Daten und Gespräche plausibilisiert werden.</p></div>
+        <div class="topics-heading"><div><p class="mini-label">Daten- und Anwendbarkeitscheck</p><h2>12 VSME-Datenfelder prüfen</h2></div><p>„Anwendbar“ steuert den Datenplan. Die beiden Bewertungen ordnen lediglich die interne Bearbeitungsreihenfolge.</p></div>
         <div id="topicCards" class="vsme-topic-grid"></div>
       </section>
 
@@ -105,21 +105,21 @@
           <div><p class="mini-label">Modul-Empfehlung</p><h1 id="moduleTitle">Basis-Modul</h1><p id="moduleReason"></p></div>
           <div id="moduleBadge" class="module-badge">B</div>
         </div>
-        <div class="result-kpis"><div><span>Basis-Angaben</span><strong id="basicRelevant">0 / 11</strong></div><div><span>Comprehensive-Angaben</span><strong id="comprehensiveRelevant">0 / 9</strong></div><div><span>Priorität</span><strong id="resultPriority">–</strong></div></div>
-        <section class="result-section"><div class="result-section-heading"><div><p class="mini-label">VSME Basis-Modul</p><h2>B1 bis B11</h2></div><p>Einstiegsmodul mit den am häufigsten nachgefragten Nachhaltigkeitsangaben.</p></div><div id="basicDisclosures" class="disclosure-list"></div></section>
-        <section class="result-section"><div class="result-section-heading"><div><p class="mini-label">VSME Comprehensive-Modul</p><h2>C1 bis C9</h2></div><p>Vertiefende Angaben für Banken, Investoren und größere Geschäftspartner; baut auf dem Basis-Modul auf.</p></div><div id="comprehensiveDisclosures" class="disclosure-list"></div></section>
+        <div class="result-kpis"><div><span>Basis-Angaben eingeplant</span><strong id="basicRelevant">0 / 11</strong></div><div><span>C-Angaben anwendbar</span><strong id="comprehensiveRelevant">0 / 9</strong></div><div><span>Erste Datenpriorität</span><strong id="resultPriority">–</strong></div></div>
+        <section class="result-section"><div class="result-section-heading"><div><p class="mini-label">VSME Basis-Modul · Option A</p><h2>B1 bis B11</h2></div><p>Das Basis-Modul ist der Mindestumfang. Angaben werden anhand ihrer Anwendbarkeit eingeplant – nicht anhand einer Wesentlichkeitsschwelle.</p></div><div id="basicDisclosures" class="disclosure-list"></div></section>
+        <section class="result-section"><div class="result-section-heading"><div><p class="mini-label">VSME Comprehensive-Modul · Option B</p><h2>C1 bis C9</h2></div><p>Option B umfasst das vollständige Basis-Modul und ergänzt vertiefende Angaben für Banken, Investoren und größere Geschäftspartner.</p></div><div id="comprehensiveDisclosures" class="disclosure-list"></div></section>
         <section class="next-steps"><div><p class="mini-label">Empfohlener Start</p><h2>Ihre nächsten vier Schritte</h2></div><ol id="nextSteps"></ol></section>
       </section>
 
       <section id="methodView" class="assessment-view">
-        <div class="method-hero"><p class="mini-label">Methodik und Grenzen</p><h1>Entscheidungshilfe, keine Konformitätsprüfung.</h1><p>Das Assessment verbindet die doppelte Wesentlichkeitsperspektive mit der VSME-Anwendbarkeitslogik. Es dokumentiert eine Managementeinschätzung, ersetzt aber weder Rechtsberatung noch Prüfung oder Assurance.</p></div>
+        <div class="method-hero"><p class="mini-label">Methodik und Grenzen</p><h1>Readiness-Check, keine Konformitätsprüfung.</h1><p>Das Tool folgt zuerst der VSME-Modul- und Anwendbarkeitslogik. Die doppelte Perspektive wird nur als freiwillige Priorisierungshilfe genutzt. Das Ergebnis ersetzt weder Rechtsberatung noch Prüfung oder Assurance.</p></div>
         <div class="method-cards">
           <article><span>01</span><h2>Unternehmensbezug</h2><p>Zuerst wird geprüft, ob das Thema für Tätigkeit, Standort, Belegschaft oder Wertschöpfungskette überhaupt anwendbar ist.</p></article>
           <article><span>02</span><h2>Auswirkungen</h2><p>Bewertet wird, wie stark das Unternehmen Menschen oder Umwelt positiv oder negativ beeinflusst.</p></article>
           <article><span>03</span><h2>Finanzielle Relevanz</h2><p>Bewertet werden mögliche Effekte auf Kosten, Umsatz, Finanzierung, Vermögenswerte, Reputation oder Geschäftskontinuität.</p></article>
-          <article><span>04</span><h2>VSME-Zuordnung</h2><p>Relevante Themen werden den Angaben B1–B11 und C1–C9 zugeordnet. B1 und B2 bilden stets die Grundlage.</p></article>
+          <article><span>04</span><h2>VSME-Datenplan</h2><p>Für Option A werden B1–B11 betrachtet. Option B setzt das Basis-Modul voraus und ergänzt C1–C9; nicht anwendbare Angaben werden begründet.</p></article>
         </div>
-        <div class="standard-note"><h2>Stand des Standards</h2><p>Die Zuordnung basiert auf dem VSME der EU-Kommission von 2025. Am 3. Juli 2026 wurde ein darauf aufbauender freiwilliger EU-Standard als delegierter Rechtsakt angenommen; er ist bis zum Abschluss der Kontrolle durch Parlament und Rat noch nicht anwendbar. Vor einer externen Veröffentlichung sollte die dann geltende Fassung geprüft werden.</p></div>
+        <div class="standard-note"><h2>Stand des Standards</h2><p>Die Zuordnung basiert auf der <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ:L_202501710" target="_blank" rel="noopener">Empfehlung (EU) 2025/1710</a> der Kommission vom 30. Juli 2025. Der VSME ist freiwillig und für nicht börsennotierte KMU konzipiert. Vor einer externen Veröffentlichung sollten Standardfassung, Berichtsgrenze und Anwendbarkeit nochmals fachlich geprüft werden.</p></div>
       </section>
     </section>
   </main>
@@ -129,10 +129,10 @@
       <header><div><span class="topic-code"></span><h3 class="topic-title"></h3></div><span class="topic-status"></span></header>
       <p class="topic-description"></p>
       <div class="topic-standards"></div>
-      <label class="applicability-label">Unternehmensbezug<select class="applicability"><option value="yes">Ja, betrifft uns</option><option value="unclear" selected>Noch zu prüfen</option><option value="no">Nicht anwendbar</option></select></label>
+      <label class="applicability-label">VSME-Anwendbarkeit<select class="applicability"><option value="yes">Anwendbar · Daten einplanen</option><option value="unclear" selected>Anwendbarkeit prüfen</option><option value="no">Nicht anwendbar · begründen</option></select></label>
       <div class="dual-score">
-        <label><span><b>Auswirkungsrelevanz</b><small>Wirkung auf Mensch und Umwelt</small></span><span class="range-row"><input class="impact-score" type="range" min="1" max="5" step="0.5" value="3"><output>3,0</output></span></label>
-        <label><span><b>Finanzielle Relevanz</b><small>Risiken und Chancen für das Unternehmen</small></span><span class="range-row"><input class="financial-score" type="range" min="1" max="5" step="0.5" value="3"><output>3,0</output></span></label>
+        <label><span><b>Impact-Priorität</b><small>freiwillige interne Reihenfolge</small></span><span class="range-row"><input class="impact-score" type="range" min="1" max="5" step="0.5" value="3"><output>3,0</output></span></label>
+        <label><span><b>Finanzielle Priorität</b><small>freiwillige interne Reihenfolge</small></span><span class="range-row"><input class="financial-score" type="range" min="1" max="5" step="0.5" value="3"><output>3,0</output></span></label>
       </div>
       <label>Begründung oder vorhandener Nachweis<textarea class="topic-note" rows="2" placeholder="z. B. Energieabrechnung, Kundenanforderung, Risikobewertung …"></textarea></label>
     </article>

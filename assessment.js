@@ -1,4 +1,4 @@
-const STORAGE_KEY = "vsme-relevanz-assessment-v1";
+const STORAGE_KEY = "vsme-readiness-check-v2";
 
 const disclosures = [
   { code: "B1", module: "basic", title: "Grundlage für die Erstellung", hint: "Berichtsoption, Konsolidierung, Standorte und wesentliche Unternehmensangaben.", core: true },
@@ -29,7 +29,7 @@ const seedTopics = [
   { id: "biodiversity", code: "E4", title: "Biodiversität und Flächennutzung", description: "Standorte, Lieferketten oder Tätigkeiten mit Einfluss auf Ökosysteme und sensible Gebiete.", standards: ["B5"], applicability: "unclear", impact: 2, financial: 1.5, note: "" },
   { id: "water", code: "E3", title: "Wasser", description: "Wasserentnahme, Wasserverbrauch, Abwasser und Tätigkeiten in Gebieten mit Wasserstress.", standards: ["B6"], applicability: "unclear", impact: 2.5, financial: 2, note: "" },
   { id: "circularity", code: "E5", title: "Ressourcen, Kreislaufwirtschaft und Abfall", description: "Materialeinsatz, Ressourceneffizienz, Produktlebensdauer, Abfälle und Verwertung.", standards: ["B7"], applicability: "yes", impact: 3.5, financial: 3, note: "" },
-  { id: "workforce", code: "S1", title: "Belegschaft und Beschäftigungsstruktur", description: "Beschäftigtenstruktur, Vertragsarten, Diversität und zusätzliche Belegschaftsmerkmale.", standards: ["B8", "C5", "C9"], applicability: "yes", impact: 3, financial: 2.5, note: "" },
+  { id: "workforce", code: "S1", title: "Belegschaft und Beschäftigungsstruktur", description: "Beschäftigtenstruktur, Vertragsarten, Diversität und zusätzliche Belegschaftsmerkmale.", standards: ["B8", "C5"], applicability: "yes", impact: 3, financial: 2.5, note: "" },
   { id: "safety", code: "S1", title: "Gesundheit und Arbeitssicherheit", description: "Arbeitsschutzsysteme, Unfälle, arbeitsbedingte Erkrankungen und Prävention.", standards: ["B9"], applicability: "yes", impact: 4, financial: 4, note: "" },
   { id: "pay", code: "S1", title: "Vergütung, Tarifbindung und Weiterbildung", description: "Faire Vergütung, Entgeltunterschiede, Tarifbindung und Kompetenzentwicklung.", standards: ["B10"], applicability: "yes", impact: 3, financial: 3, note: "" },
   { id: "humanrights", code: "S1–S3", title: "Menschenrechte und Beschwerdewege", description: "Menschenrechtspolitiken, Beschwerdeverfahren und schwerwiegende Vorfälle im Unternehmen oder der Wertschöpfungskette.", standards: ["C6", "C7"], applicability: "unclear", impact: 3, financial: 3, note: "" },
@@ -57,7 +57,7 @@ function topicStatus(topic) {
   if (topic.applicability === "unclear") return "observe";
   return topicScore(topic) >= state.threshold ? "relevant" : "observe";
 }
-function statusLabel(status) { return status === "relevant" ? "Relevant" : status === "na" ? "Nicht anwendbar" : "Prüfen"; }
+function statusLabel(status) { return status === "relevant" ? "Priorisiert" : status === "na" ? "Nicht anwendbar" : "Nachrangig"; }
 
 function moduleRecommendation() {
   const external = [state.drivers.banks, state.drivers.customers, state.drivers.tenders].filter(Boolean).length;
@@ -67,11 +67,11 @@ function moduleRecommendation() {
 }
 
 function disclosureState(disclosure) {
-  if (disclosure.core) return { status: "core", label: "Grundlage", reason: "Unabhängig von einzelnen Themen einzuplanen." };
+  if (disclosure.core) return { status: "core", label: "Pflichtbestandteil", reason: "Im Basis-Modul grundsätzlich einzuplanen." };
   const linked = state.topics.filter(topic => topic.standards.includes(disclosure.code));
-  if (linked.some(topic => topicStatus(topic) === "relevant")) return { status: "relevant", label: "Relevant", reason: linked.filter(t => topicStatus(t) === "relevant").map(t => t.title).join(", ") };
-  if (linked.some(topic => topicStatus(topic) === "observe")) return { status: "check", label: "Prüfen", reason: "Anwendbarkeit oder Relevanz noch nicht abschließend geklärt." };
-  return { status: "inactive", label: "Derzeit nicht prioritär", reason: "Nach aktueller Einschätzung nicht anwendbar oder unterhalb der Schwelle." };
+  if (linked.some(topic => topic.applicability === "yes")) return { status: "relevant", label: "Einplanen", reason: linked.filter(t => t.applicability === "yes").map(t => t.title).join(", ") };
+  if (linked.some(topic => topic.applicability === "unclear")) return { status: "check", label: "Anwendbarkeit prüfen", reason: "Unternehmensbezug und verfügbare Nachweise noch klären." };
+  return { status: "inactive", label: "Nicht anwendbar", reason: "Auslassung im Bericht kurz und nachvollziehbar begründen." };
 }
 
 function createTopicCards() {
@@ -143,16 +143,17 @@ function drawMatrix() {
     ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2); ctx.fillStyle = colors[status]; ctx.fill(); ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke();
     ctx.fillStyle = "#1b2824"; ctx.font = "700 11px Segoe UI, sans-serif"; ctx.fillText(`${index + 1} ${topic.code}`, x + radius + 5, y + 4);
   });
-  ctx.fillStyle = "#4f5e58"; ctx.font = "700 13px Segoe UI, sans-serif"; ctx.fillText("Finanzielle Relevanz →", plot.x + plot.w - 155, height - 22);
-  ctx.save(); ctx.translate(23, plot.y + 165); ctx.rotate(-Math.PI / 2); ctx.fillText("Auswirkungsrelevanz →", 0, 0); ctx.restore();
+  ctx.fillStyle = "#4f5e58"; ctx.font = "700 13px Segoe UI, sans-serif"; ctx.fillText("Finanzielle Priorität →", plot.x + plot.w - 150, height - 22);
+  ctx.save(); ctx.translate(23, plot.y + 165); ctx.rotate(-Math.PI / 2); ctx.fillText("Impact-Priorität →", 0, 0); ctx.restore();
 }
 
 function renderSummary() {
   const relevant = state.topics.filter(topic => topicStatus(topic) === "relevant").sort((a,b) => topicScore(b) - topicScore(a));
+  const planned = state.topics.filter(topic => topic.applicability === "yes");
   const open = state.topics.filter(topic => topic.applicability === "unclear").length;
   const completed = Math.round(((state.topics.length - open) / state.topics.length) * 100);
   document.querySelector("#topicCount").textContent = state.topics.length;
-  document.querySelector("#relevantCount").textContent = relevant.length;
+  document.querySelector("#relevantCount").textContent = planned.length;
   document.querySelector("#openCount").textContent = open;
   document.querySelector("#progressText").textContent = `${completed} %`;
   document.querySelector("#progressBar").value = completed;
@@ -170,12 +171,12 @@ function renderDisclosures(module, containerId) {
 
 function renderResult() {
   const recommendation = moduleRecommendation();
-  const title = recommendation.comprehensive ? "Basis + Comprehensive" : "Basis-Modul";
+  const title = recommendation.comprehensive ? "Option B · Basis + Comprehensive" : "Option A · Basis-Modul";
   document.querySelector("#moduleTitle").textContent = title;
   document.querySelector("#moduleBadge").textContent = recommendation.comprehensive ? "B+C" : "B";
   document.querySelector("#moduleReason").textContent = recommendation.comprehensive
-    ? `Für ${state.meta.companyName} sprechen ${recommendation.external} externe Anforderungsgruppen und ${recommendation.relevantComprehensive} relevante Vertiefungsthemen für beide Module.`
-    : `Für ${state.meta.companyName} ist das Basis-Modul der angemessene Einstieg. Vertiefende C-Angaben können später bedarfsbezogen ergänzt werden.`;
+    ? `Für ${state.meta.companyName} sprechen ${recommendation.external} externe Nutzergruppen für Option B. Das Comprehensive-Modul wird zusätzlich zum vollständigen Basis-Modul angewendet.`
+    : `Für ${state.meta.companyName} ist Option A der angemessene Einstieg. Das Basis-Modul B1–B11 wird vollständig betrachtet; nicht anwendbare Angaben werden kenntlich gemacht.`;
   const basics = disclosures.filter(d => d.module === "basic" && ["core","relevant"].includes(disclosureState(d).status)).length;
   const comprehensive = disclosures.filter(d => d.module === "comprehensive" && disclosureState(d).status === "relevant").length;
   document.querySelector("#basicRelevant").textContent = `${basics} / 11`;
@@ -185,9 +186,9 @@ function renderResult() {
   renderDisclosures("basic", "#basicDisclosures"); renderDisclosures("comprehensive", "#comprehensiveDisclosures");
   const topNames = state.topics.filter(t => topicStatus(t) === "relevant").sort((a,b) => topicScore(b)-topicScore(a)).slice(0,3).map(t => t.title);
   document.querySelector("#nextSteps").innerHTML = [
-    "Berichtsgrenze, Berichtsjahr und Verantwortliche für B1 festlegen.",
+    "Option A oder B, Berichtsgrenze, Berichtsjahr und Verantwortliche für B1 festlegen.",
     `Datenquellen und Nachweise für ${topNames.join(", ") || "die relevanten Themen"} erfassen.`,
-    recommendation.comprehensive ? "Basis- und Comprehensive-Angaben in einem Datenblatt zusammenführen." : "Die relevanten Basis-Angaben B1 bis B11 in einem Datenblatt zusammenführen.",
+    recommendation.comprehensive ? "B1–B11 und die anwendbaren C1–C9 in einem VSME-Datenblatt zusammenführen." : "B1–B11 vollständig prüfen und die anwendbaren Angaben im VSME-Datenblatt zusammenführen.",
     "Ergebnis intern freigeben und mindestens jährlich oder bei neuen Anfragen aktualisieren."
   ].map(step => `<li>${step}</li>`).join("");
 }
