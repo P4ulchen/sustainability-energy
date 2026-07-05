@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Deutschsprachiger VSME-Readiness-Check für KMU mit Modulwahl, Anwendbarkeitsprüfung und Datenplan.">
+  <meta name="description" content="VSME-Readiness-Check für KMU: Modulwahl, Anwendbarkeit, Datenstatus, Nachweise und Lückenplan für B1–B11 und C1–C9.">
   <title>VSME Readiness-Check | Dammann Advisory</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="assessment.css">
@@ -22,7 +22,7 @@
   </header>
 
   <main id="assessmentMain" class="assessment-shell">
-    <aside class="assessment-sidebar" aria-label="Unternehmensprofil und Einstellungen">
+    <aside class="assessment-sidebar" aria-label="Unternehmensprofil und Berichtsrahmen">
       <section class="setup-card">
         <p class="mini-label">01 · Unternehmensprofil</p>
         <h2>Ihr Unternehmen</h2>
@@ -33,40 +33,51 @@
             <option value="micro">Bis 9</option>
             <option value="small">10 bis 49</option>
             <option value="medium" selected>50 bis 249</option>
-            <option value="larger">250 bis 1.000</option>
+            <option value="larger">250 oder mehr</option>
           </select>
         </label>
         <label>Berichtsjahr<input id="reportingYear" type="number" min="2025" value="2026"></label>
       </section>
 
       <section class="setup-card">
-        <p class="mini-label">02 · Modulwahl</p>
-        <h2>Wer nutzt Ihre VSME-Daten?</h2>
+        <p class="mini-label">02 · Berichtsrahmen</p>
+        <h2>VSME-Option</h2>
+        <label>Gewählter Umfang
+          <select id="moduleOption">
+            <option value="basic">Option A · Basis-Modul</option>
+            <option value="comprehensive" selected>Option B · Basis + Comprehensive</option>
+          </select>
+        </label>
+        <label>Berichtsgrundlage
+          <select id="reportingBasis">
+            <option value="individual" selected>Einzelunternehmen</option>
+            <option value="consolidated">Konsolidiert mit Tochterunternehmen</option>
+          </select>
+        </label>
+        <div id="moduleGuidance" class="module-guidance" aria-live="polite"></div>
+      </section>
+
+      <section class="setup-card">
+        <p class="mini-label">03 · Informationsnutzer</p>
+        <h2>Wer fragt Daten an?</h2>
         <label class="choice"><input id="driverBanks" type="checkbox" checked><span><strong>Banken &amp; Finanzierung</strong><small>Kredite, Fördermittel, Investitionen</small></span></label>
         <label class="choice"><input id="driverCustomers" type="checkbox" checked><span><strong>Kunden &amp; Lieferkette</strong><small>Fragebögen und Konzernanforderungen</small></span></label>
         <label class="choice"><input id="driverTenders" type="checkbox"><span><strong>Ausschreibungen</strong><small>Öffentliche oder private Vergaben</small></span></label>
-        <label class="choice"><input id="driverInternal" type="checkbox" checked><span><strong>Interne Steuerung</strong><small>Ziele, Maßnahmen und Fortschritt</small></span></label>
-      </section>
-
-      <section class="setup-card compact-card">
-        <p class="mini-label">03 · Interne Priorisierung</p>
-        <h2>Arbeitsschwelle</h2>
-        <p>Die Schwelle priorisiert Ihre Datenerhebung. Sie entscheidet nicht darüber, welche VSME-Angaben zum gewählten Modul gehören.</p>
-        <div class="threshold-row"><input id="threshold" type="range" min="2" max="5" step="0.5" value="3"><output id="thresholdOut">3,0</output></div>
+        <label class="choice"><input id="driverInternal" type="checkbox" checked><span><strong>Interne Steuerung</strong><small>Jährliche Berichts- und Datenroutine</small></span></label>
       </section>
 
       <section class="setup-card info-card">
-        <p class="mini-label">Einordnung</p>
-        <p>Der VSME verlangt keine formelle Wesentlichkeitsanalyse. Das Basis-Modul umfasst B1–B11; das Comprehensive-Modul ergänzt C1–C9. Einzelne Angaben werden nur ausgelassen, wenn sie für das Unternehmen nicht anwendbar sind. Die Bewertung unten dient allein der internen Reihenfolge.</p>
+        <p class="mini-label">So funktioniert der Check</p>
+        <p>Bewertet werden ausschließlich Anwendbarkeit und Berichtsbereitschaft. Ein niedriger Datenstand entfernt keine anwendbare VSME-Angabe, sondern erzeugt eine Datenlücke im Arbeitsplan.</p>
       </section>
-      <button id="resetBtn" class="reset-button" type="button">Assessment zurücksetzen</button>
+      <button id="resetBtn" class="reset-button" type="button">Eingaben zurücksetzen</button>
     </aside>
 
     <section class="assessment-workspace">
       <div class="assessment-toolbar">
         <nav class="assessment-tabs" aria-label="Assessment-Bereiche">
           <button class="assessment-tab active" type="button" data-view="assessmentView">Readiness-Check</button>
-          <button class="assessment-tab" type="button" data-view="resultView">Modul &amp; Datenplan</button>
+          <button class="assessment-tab" type="button" data-view="resultView">Lückenplan</button>
           <button class="assessment-tab" type="button" data-view="methodView">Methodik</button>
         </nav>
         <div class="export-actions">
@@ -77,64 +88,96 @@
 
       <section id="assessmentView" class="assessment-view active">
         <div class="assessment-intro">
-          <div><p class="mini-label">VSME-Anwendbarkeit &amp; Datenreife</p><h1>Welche VSME-Daten kann Ihr KMU belastbar berichten?</h1></div>
-          <p>Prüfen Sie Unternehmensbezug und Nachweise. Die doppelte Perspektive hilft zusätzlich, die Datenerhebung sinnvoll zu priorisieren.</p>
+          <div><p class="mini-label">VSME-Anwendbarkeit &amp; Berichtsbereitschaft</p><h1>Wie berichtsfähig ist Ihr Unternehmen?</h1></div>
+          <p>Prüfen Sie für jede Angabe, ob sie anwendbar ist, wie belastbar die Daten sind und wo Nachweise oder Verantwortlichkeiten fehlen.</p>
         </div>
 
-        <div class="overview-grid">
-          <section class="matrix-card">
-            <div class="card-heading"><div><p class="mini-label">Priorisierungsmatrix</p><h2>Impact × finanzielle Priorität</h2></div><div class="matrix-legend"><span><i class="legend-dot relevant"></i>Priorisiert</span><span><i class="legend-dot observe"></i>Nachrangig</span><span><i class="legend-dot not-applicable"></i>Nicht anwendbar</span></div></div>
-            <canvas id="matrixCanvas" width="1080" height="680" aria-label="Matrix der Nachhaltigkeitsthemen"></canvas>
+        <div class="readiness-overview">
+          <section class="readiness-score-card">
+            <div id="readinessGauge" class="readiness-gauge" style="--readiness:0deg"><div><strong id="readinessScore">0 %</strong><span>berichtsfähig</span></div></div>
+            <div class="readiness-score-copy"><p class="mini-label">Gesamtstatus im gewählten Umfang</p><h2 id="readinessLabel">Check beginnen</h2><p id="readinessExplanation"></p></div>
           </section>
-          <aside class="assessment-summary">
-            <p class="mini-label">Zwischenstand</p>
-            <h2>Ihre VSME-Readiness</h2>
-            <dl class="assessment-stats"><div><dt>Datenfelder</dt><dd id="topicCount">0</dd></div><div><dt>Eingeplant</dt><dd id="relevantCount">0</dd></div><div><dt>Anwendbarkeit offen</dt><dd id="openCount">0</dd></div></dl>
-            <div class="progress-block"><div><span>Bearbeitungsstand</span><strong id="progressText">0 %</strong></div><progress id="progressBar" max="100" value="0"></progress></div>
-            <h3>Prioritäre Datenfelder</h3><ol id="priorityList" class="priority-list"></ol>
-            <button id="showResultBtn" type="button">Modul und Datenplan anzeigen →</button>
-          </aside>
+          <section class="readiness-kpis" aria-label="Readiness-Kennzahlen">
+            <div class="ready"><span>Berichtsfähig</span><strong id="readyCount">0</strong></div>
+            <div class="partial"><span>Teilweise vorhanden</span><strong id="partialCount">0</strong></div>
+            <div class="missing"><span>Datenlücke</span><strong id="missingCount">0</strong></div>
+            <div class="clarify"><span>Anwendbarkeit offen</span><strong id="clarifyCount">0</strong></div>
+          </section>
         </div>
 
-        <div class="topics-heading"><div><p class="mini-label">Daten- und Anwendbarkeitscheck</p><h2>12 VSME-Datenfelder prüfen</h2></div><p>„Anwendbar“ steuert den Datenplan. Die beiden Bewertungen ordnen lediglich die interne Bearbeitungsreihenfolge.</p></div>
-        <div id="topicCards" class="vsme-topic-grid"></div>
+        <section class="readiness-board" aria-labelledby="boardTitle">
+          <div class="board-heading"><div><p class="mini-label">Readiness-Übersicht</p><h2 id="boardTitle">Wo stehen B1–B11 und C1–C9?</h2></div><p>Die Codes werden automatisch nach Ihrem aktuellen Datenstatus einsortiert.</p></div>
+          <div class="board-columns">
+            <div class="board-column ready"><h3>Berichtsfähig <span id="boardReadyCount">0</span></h3><div id="boardReady" class="code-cloud"></div></div>
+            <div class="board-column partial"><h3>Teilweise <span id="boardPartialCount">0</span></h3><div id="boardPartial" class="code-cloud"></div></div>
+            <div class="board-column missing"><h3>Datenlücke <span id="boardMissingCount">0</span></h3><div id="boardMissing" class="code-cloud"></div></div>
+            <div class="board-column clarify"><h3>Zu klären <span id="boardClarifyCount">0</span></h3><div id="boardClarify" class="code-cloud"></div></div>
+          </div>
+          <div class="completion-row"><span>Check vollständig bearbeitet</span><strong id="completionText">0 %</strong><progress id="completionBar" max="100" value="0"></progress></div>
+        </section>
+
+        <div class="disclosures-heading">
+          <div><p class="mini-label">Einzelprüfung</p><h2>VSME-Angaben bearbeiten</h2></div>
+          <div class="filter-actions" aria-label="Angaben filtern">
+            <button class="filter-button active" type="button" data-filter="scope">Gewählter Umfang</button>
+            <button class="filter-button" type="button" data-filter="basic">Nur B1–B11</button>
+            <button class="filter-button" type="button" data-filter="comprehensive">Nur C1–C9</button>
+            <button class="filter-button" type="button" data-filter="all">Alle</button>
+          </div>
+        </div>
+        <div id="disclosureCards" class="disclosure-grid"></div>
       </section>
 
       <section id="resultView" class="assessment-view">
         <div class="result-hero">
-          <div><p class="mini-label">Modul-Empfehlung</p><h1 id="moduleTitle">Basis-Modul</h1><p id="moduleReason"></p></div>
-          <div id="moduleBadge" class="module-badge">B</div>
+          <div><p class="mini-label">VSME-Readiness-Ergebnis</p><h1 id="resultTitle">Option B · Basis + Comprehensive</h1><p id="resultReason"></p></div>
+          <div id="resultScore" class="result-score">0 %</div>
         </div>
-        <div class="result-kpis"><div><span>Basis-Angaben eingeplant</span><strong id="basicRelevant">0 / 11</strong></div><div><span>C-Angaben anwendbar</span><strong id="comprehensiveRelevant">0 / 9</strong></div><div><span>Erste Datenpriorität</span><strong id="resultPriority">–</strong></div></div>
-        <section class="result-section"><div class="result-section-heading"><div><p class="mini-label">VSME Basis-Modul · Option A</p><h2>B1 bis B11</h2></div><p>Das Basis-Modul ist der Mindestumfang. Angaben werden anhand ihrer Anwendbarkeit eingeplant – nicht anhand einer Wesentlichkeitsschwelle.</p></div><div id="basicDisclosures" class="disclosure-list"></div></section>
-        <section class="result-section"><div class="result-section-heading"><div><p class="mini-label">VSME Comprehensive-Modul · Option B</p><h2>C1 bis C9</h2></div><p>Option B umfasst das vollständige Basis-Modul und ergänzt vertiefende Angaben für Banken, Investoren und größere Geschäftspartner.</p></div><div id="comprehensiveDisclosures" class="disclosure-list"></div></section>
-        <section class="next-steps"><div><p class="mini-label">Empfohlener Start</p><h2>Ihre nächsten vier Schritte</h2></div><ol id="nextSteps"></ol></section>
+        <div class="result-kpis"><div><span>Berichtsfähig</span><strong id="resultReady">0</strong></div><div><span>Teilweise</span><strong id="resultPartial">0</strong></div><div><span>Offene Datenlücken</span><strong id="resultMissing">0</strong></div><div><span>Nicht anwendbar</span><strong id="resultNa">0</strong></div></div>
+
+        <section class="result-section">
+          <div class="result-section-heading"><div><p class="mini-label">Arbeitsgrundlage</p><h2>VSME-Lückenplan</h2></div><p>Alle offenen Angaben in der Reihenfolge des Standards – ohne Wesentlichkeits- oder Prioritätsranking.</p></div>
+          <div class="table-wrap"><table class="gap-table"><thead><tr><th>Code</th><th>Angabe</th><th>Status</th><th>Nächster Schritt</th><th>Verantwortung</th></tr></thead><tbody id="gapTableBody"></tbody></table></div>
+        </section>
+
+        <section class="coverage-section">
+          <div><p class="mini-label">Modulfortschritt</p><h2>Readiness nach Modul</h2></div>
+          <div class="coverage-bars">
+            <div><span><strong>Basis-Modul</strong><b id="basicCoverageText">0 %</b></span><progress id="basicCoverage" max="100" value="0"></progress><small>B1–B11</small></div>
+            <div><span><strong>Comprehensive-Modul</strong><b id="comprehensiveCoverageText">0 %</b></span><progress id="comprehensiveCoverage" max="100" value="0"></progress><small>C1–C9</small></div>
+          </div>
+        </section>
+
+        <section class="next-steps"><div><p class="mini-label">Empfohlener Ablauf</p><h2>Vom Check zum Bericht</h2></div><ol id="nextSteps"></ol></section>
       </section>
 
       <section id="methodView" class="assessment-view">
-        <div class="method-hero"><p class="mini-label">Methodik und Grenzen</p><h1>Readiness-Check, keine Konformitätsprüfung.</h1><p>Das Tool folgt zuerst der VSME-Modul- und Anwendbarkeitslogik. Die doppelte Perspektive wird nur als freiwillige Priorisierungshilfe genutzt. Das Ergebnis ersetzt weder Rechtsberatung noch Prüfung oder Assurance.</p></div>
+        <div class="method-hero"><p class="mini-label">Methodik und Grenzen</p><h1>Readiness statt Wesentlichkeit.</h1><p>Das Tool bewertet keine Auswirkungen und keine finanzielle Wesentlichkeit. Es prüft ausschließlich, ob die Angaben des gewählten VSME-Moduls anwendbar, datenmäßig vorbereitet und nachvollziehbar belegt sind.</p></div>
         <div class="method-cards">
-          <article><span>01</span><h2>Unternehmensbezug</h2><p>Zuerst wird geprüft, ob das Thema für Tätigkeit, Standort, Belegschaft oder Wertschöpfungskette überhaupt anwendbar ist.</p></article>
-          <article><span>02</span><h2>Auswirkungen</h2><p>Bewertet wird, wie stark das Unternehmen Menschen oder Umwelt positiv oder negativ beeinflusst.</p></article>
-          <article><span>03</span><h2>Finanzielle Relevanz</h2><p>Bewertet werden mögliche Effekte auf Kosten, Umsatz, Finanzierung, Vermögenswerte, Reputation oder Geschäftskontinuität.</p></article>
-          <article><span>04</span><h2>VSME-Datenplan</h2><p>Für Option A werden B1–B11 betrachtet. Option B setzt das Basis-Modul voraus und ergänzt C1–C9; nicht anwendbare Angaben werden begründet.</p></article>
+          <article><span>01</span><h2>Modul festlegen</h2><p>Option A umfasst B1–B11. Option B setzt das Basis-Modul voraus und ergänzt C1–C9 für weitergehende Informationsbedürfnisse.</p></article>
+          <article><span>02</span><h2>Anwendbarkeit prüfen</h2><p>Die jeweilige Angabe wird als anwendbar, noch zu klären oder nicht anwendbar dokumentiert. Auslassungen sollten nachvollziehbar begründet werden.</p></article>
+          <article><span>03</span><h2>Datenstatus bewerten</h2><p>„Berichtsfähig“ bedeutet: vollständig, plausibilisiert und mit Quelle belegbar. Teilstände und fehlende Daten erscheinen im Lückenplan.</p></article>
+          <article><span>04</span><h2>Nachweise sichern</h2><p>Datenquelle, Verantwortliche und Erläuterungen werden pro Angabe hinterlegt. So entsteht eine wiederholbare jährliche Berichtsgrundlage.</p></article>
         </div>
-        <div class="standard-note"><h2>Stand des Standards</h2><p>Die Zuordnung basiert auf der <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ:L_202501710" target="_blank" rel="noopener">Empfehlung (EU) 2025/1710</a> der Kommission vom 30. Juli 2025. Der VSME ist freiwillig und für nicht börsennotierte KMU konzipiert. Vor einer externen Veröffentlichung sollten Standardfassung, Berichtsgrenze und Anwendbarkeit nochmals fachlich geprüft werden.</p></div>
+        <div class="standard-note"><h2>Stand und Einordnung</h2><p>Die Struktur folgt der <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=OJ:L_202501710" target="_blank" rel="noopener">Empfehlung (EU) 2025/1710</a> der Kommission vom 30. Juli 2025. Der Check ist eine freiwillige Arbeitshilfe und keine Konformitätsprüfung, Rechtsberatung oder Assurance.</p></div>
       </section>
     </section>
   </main>
 
-  <template id="topicTemplate">
-    <article class="vsme-topic-card">
-      <header><div><span class="topic-code"></span><h3 class="topic-title"></h3></div><span class="topic-status"></span></header>
-      <p class="topic-description"></p>
-      <div class="topic-standards"></div>
-      <label class="applicability-label">VSME-Anwendbarkeit<select class="applicability"><option value="yes">Anwendbar · Daten einplanen</option><option value="unclear" selected>Anwendbarkeit prüfen</option><option value="no">Nicht anwendbar · begründen</option></select></label>
-      <div class="dual-score">
-        <label><span><b>Impact-Priorität</b><small>freiwillige interne Reihenfolge</small></span><span class="range-row"><input class="impact-score" type="range" min="1" max="5" step="0.5" value="3"><output>3,0</output></span></label>
-        <label><span><b>Finanzielle Priorität</b><small>freiwillige interne Reihenfolge</small></span><span class="range-row"><input class="financial-score" type="range" min="1" max="5" step="0.5" value="3"><output>3,0</output></span></label>
+  <template id="disclosureTemplate">
+    <article class="disclosure-card">
+      <header><div><span class="disclosure-code"></span><span class="disclosure-module"></span></div><span class="readiness-badge"></span></header>
+      <h3 class="disclosure-title"></h3>
+      <p class="disclosure-hint"></p>
+      <div class="readiness-controls">
+        <label>Anwendbarkeit<select class="applicability"><option value="yes">Anwendbar</option><option value="unclear">Noch zu klären</option><option value="no">Nicht anwendbar</option></select></label>
+        <label>Datenstatus<select class="data-status"><option value="ready">Vollständig &amp; belegt</option><option value="partial">Teilweise vorhanden</option><option value="missing">Fehlt</option></select></label>
       </div>
-      <label>Begründung oder vorhandener Nachweis<textarea class="topic-note" rows="2" placeholder="z. B. Energieabrechnung, Kundenanforderung, Risikobewertung …"></textarea></label>
+      <div class="evidence-grid">
+        <label>Datenquelle / Nachweis<input class="evidence" type="text" placeholder="z. B. Rechnung, HR-Export, Richtlinie …"></label>
+        <label>Verantwortlich<input class="owner" type="text" placeholder="Rolle oder Abteilung"></label>
+      </div>
+      <label class="note-label">Erläuterung oder Begründung<textarea class="disclosure-note" rows="2" placeholder="Offene Punkte, Abgrenzung oder Begründung …"></textarea></label>
     </article>
   </template>
   <script src="assessment.js"></script>
