@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="VSME Readiness-Check für KMU: ESG-Daten, Nachweise, Verantwortlichkeiten und eine kompakte Checkliste aller geprüften VSME-Angaben.">
+  <title>VSME Readiness-Check | Dammann Sustainability &amp; Energy</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="assessment.css">
+</head>
+<body class="vsme-page">
+  <a class="skip-link" href="#assessmentMain">Zum Inhalt</a>
+  <header class="assessment-header">
+    <a class="assessment-brand" href="index.html" aria-label="Zur Beratungswebsite">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i></span>
+      <span><small>Dammann Sustainability &amp; Energy</small><strong>VSME Readiness-Check</strong></span>
+    </a>
+    <div class="assessment-header-actions">
+      <span id="saveStatus" class="save-status" aria-live="polite">Nur lokal gespeichert</span>
+      <a href="datenschutz.html#tool-daten">Datenschutz</a>
+      <a class="assessment-home" href="index.html">Zur Beratung</a>
+    </div>
+  </header>
+
+  <div class="progress-shell" aria-label="Fortschritt im Assessment">
+    <div class="progress-copy"><strong id="progressLabel">1. Kontext</strong><span id="progressPercent">0 % bearbeitet</span></div>
+    <progress id="assessmentProgress" max="100" value="0">0 %</progress>
+    <ol id="stepNav" class="step-nav">
+      <li><button type="button" data-step="1" aria-current="step"><span>1</span>Kontext</button></li>
+      <li><button type="button" data-step="2"><span>2</span>Unternehmen</button></li>
+      <li><button type="button" data-step="3"><span>3</span>Informationsbedarf</button></li>
+      <li><button type="button" data-step="4"><span>4</span>VSME-Readiness</button></li>
+      <li><button type="button" data-step="5"><span>5</span>Nachweise &amp; Rollen</button></li>
+      <li><button type="button" data-step="6"><span>6</span>Prioritäten</button></li>
+      <li><button type="button" data-step="7"><span>7</span>Ergebnis</button></li>
+    </ol>
+  </div>
+
+  <main id="assessmentMain" class="assessment-main">
+    <div id="formError" class="form-error" role="alert" aria-live="assertive" hidden></div>
+
+    <section class="assessment-step active" data-step-panel="1" aria-labelledby="step1Title">
+      <div class="step-hero">
+        <div><p class="eyebrow">Schritt 1 von 7 · Kontext</p><h1 id="step1Title">Warum machen Sie den Check gerade jetzt?</h1></div>
+        <p>Ihr Anlass bestimmt, welche Informationsbereiche im Ergebnis zuerst erscheinen. Der Check dauert bei einer ersten Einschätzung etwa 15–20 Minuten.</p>
+      </div>
+      <div class="privacy-note" role="note"><strong>Ihre Eingaben bleiben in diesem Browser.</strong> Es werden keine Assessment-Daten an die Website übertragen, solange Sie nicht selbst einen Export erstellen oder eine E-Mail vorbereiten.</div>
+      <fieldset class="question-card" data-required-group="context">
+        <legend>Warum führen Sie dieses Assessment durch? <span>Mehrfachauswahl möglich</span></legend>
+        <div class="choice-grid">
+          <label class="option-card"><input type="checkbox" name="assessmentContext" value="customer_requests"><span><strong>Kunden- oder Lieferkettenanfragen</strong><small>Fragebögen, Lieferantenportale, Konzernanforderungen</small></span></label>
+          <label class="option-card"><input type="checkbox" name="assessmentContext" value="bank_financing"><span><strong>Bank, Investor, Versicherer oder Finanzierung</strong><small>Kreditgespräch, Fördermittel, Risikoprüfung</small></span></label>
+          <label class="option-card"><input type="checkbox" name="assessmentContext" value="public_tenders"><span><strong>Ausschreibung oder Beschaffung</strong><small>Öffentliche und private Vergabeverfahren</small></span></label>
+          <label class="option-card"><input type="checkbox" name="assessmentContext" value="internal_data_management"><span><strong>Interne ESG-Steuerung und Datensammlung</strong><small>Transparenz, Zuständigkeiten und wiederholbare Abläufe</small></span></label>
+          <label class="option-card"><input type="checkbox" name="assessmentContext" value="future_reporting"><span><strong>Vorbereitung auf künftige Berichtserwartungen</strong><small>Freiwilliger Aufbau einer belastbaren Datengrundlage</small></span></label>
+          <label class="option-card"><input type="checkbox" name="assessmentContext" value="parent_company"><span><strong>Anfrage einer Muttergesellschaft oder Gruppe</strong><small>Konzernvorgaben und konsolidierte Datenerhebung</small></span></label>
+          <label class="option-card"><input id="contextOtherCheck" type="checkbox" name="assessmentContext" value="other"><span><strong>Anderer Anlass</strong><small>Eigenen Kontext ergänzen</small></span></label>
+        </div>
+        <label id="contextOtherWrap" class="conditional-field" hidden>Anderer Anlass<input id="contextOther" type="text" autocomplete="off"></label>
+      </fieldset>
+      <aside class="legal-context">
+        <h2>Wichtige Einordnung – Stand 7. Juli 2026</h2>
+        <p>Der VSME ist ein freiwilliger Berichtsstandard für nicht börsennotierte KMU. Dieses Tool unterstützt die interne Vorbereitung und ESG-Datenplanung. Es entscheidet nicht, ob Ihr Unternehmen rechtlich unter CSRD, ESRS, VSME oder andere Pflichten fällt.</p>
+        <details><summary>Was hat sich auf EU-Ebene geändert?</summary><p>Die <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32026L0470" target="_blank" rel="noopener">Richtlinie (EU) 2026/470</a> hat den CSRD-Anwendungsbereich auf EU-Ebene neu zugeschnitten und sieht freiwillige Standards auf Grundlage der <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/?uri=CELEX:32025H1710" target="_blank" rel="noopener">Empfehlung (EU) 2025/1710</a> vor. Nationale Umsetzung und Einzelfallfragen können abweichen. Deshalb nimmt dieser Check bewusst keine rechtliche Scope-Prüfung vor. Die 20 Angabebereiche B1–B11 und C1–C9 entsprechen der Empfehlung; für die eigentliche Berichterstellung stellt EFRAG ergänzend die <a href="https://www.efrag.org/en/vsme-digital-template-and-xbrl-taxonomy" target="_blank" rel="noopener">Digitalvorlage 1.3.0 vom 11. Juni 2026</a> bereit.</p></details>
+      </aside>
+    </section>
+
+    <section class="assessment-step" data-step-panel="2" aria-labelledby="step2Title" hidden>
+      <div class="step-hero"><div><p class="eyebrow">Schritt 2 von 7 · Unternehmensprofil</p><h1 id="step2Title">Welcher betriebliche Kontext prägt Ihre Daten?</h1></div><p>Nur Angaben, die die Auswertung sinnvoll zuschneiden – ohne unnötige Unternehmensdetails.</p></div>
+      <div class="form-grid">
+        <div class="question-card compact"><label class="field-label" for="employeeCount">Unternehmensgröße in Mitarbeitern</label><input id="employeeCount" type="number" min="0" step="1" inputmode="numeric" placeholder="z. B. 85"><p class="field-help">Geben Sie die durchschnittliche Anzahl der Mitarbeiter im letzten Geschäftsjahr an.</p></div>
+        <div class="question-card compact"><label class="field-label" for="sector">Branche</label><select id="sector"><option value="">Bitte wählen</option></select><label id="sectorOtherWrap" class="conditional-field" hidden>Andere Branche<input id="sectorOther" type="text"></label></div>
+        <fieldset class="question-card compact"><legend>Anzahl betrieblicher Standorte</legend><div class="radio-list">
+          <label><input type="radio" name="sites" value="one"><span>Ein Standort</span></label><label><input type="radio" name="sites" value="two_five"><span>Zwei bis fünf Standorte</span></label><label><input type="radio" name="sites" value="more_five"><span>Mehr als fünf Standorte</span></label><label><input type="radio" name="sites" value="remote_office"><span>Überwiegend remote oder bürobasiert</span></label>
+        </div></fieldset>
+        <fieldset class="question-card compact"><legend>Geografischer Umfang</legend><div class="radio-list">
+          <label><input type="radio" name="geography" value="germany"><span>Nur Deutschland</span></label><label><input type="radio" name="geography" value="eu"><span>Mehrere EU-Länder</span></label><label><input type="radio" name="geography" value="eu_non_eu"><span>EU und Nicht-EU-Länder</span></label><label><input type="radio" name="geography" value="not_sure"><span>Nicht sicher</span></label>
+        </div></fieldset>
+      </div>
+      <fieldset class="question-card"><legend>Vorhandene Managementsysteme oder Grundlagen <span>Mehrfachauswahl möglich</span></legend><div class="chip-grid" id="managementSystems">
+        <label><input type="checkbox" value="iso9001"><span>ISO 9001</span></label><label><input type="checkbox" value="iso14001"><span>ISO 14001</span></label><label><input type="checkbox" value="iso50001"><span>ISO 50001</span></label><label><input type="checkbox" value="emas"><span>EMAS</span></label><label><input type="checkbox" value="energy_audit"><span>DIN EN 16247-1</span></label><label><input type="checkbox" value="ohs"><span>Arbeitsschutzmanagement</span></label><label><input type="checkbox" value="supplier_code"><span>Lieferantenkodex</span></label><label><input type="checkbox" value="sustainability_policy"><span>Umwelt-/Nachhaltigkeitspolitik</span></label><label><input type="checkbox" value="none"><span>Nichts davon</span></label><label><input type="checkbox" value="other"><span>Sonstiges</span></label>
+      </div></fieldset>
+      <section id="sectorPromptPanel" class="sector-panel" hidden aria-live="polite"><p class="eyebrow">Optionaler Branchenhinweis</p><h2>Was trifft auf Ihr Unternehmen zu?</h2><p>Diese Angaben beeinflussen nur Hinweise und Prioritäten, niemals die rechtliche Einordnung.</p><div id="sectorPrompts" class="chip-grid"></div></section>
+      <fieldset class="question-card"><legend>Prüftiefe für diesen Check</legend><div class="radio-list horizontal">
+        <label><input type="radio" name="assessmentScope" value="basic"><span><strong>Basis-Modul</strong><small>B1–B11 als kompakter Einstieg</small></span></label>
+        <label><input type="radio" name="assessmentScope" value="comprehensive"><span><strong>Basis + Comprehensive</strong><small>B1–B11 und C1–C9 für weitergehende Informationsbedürfnisse</small></span></label>
+      </div><p class="field-help">Die Auswahl ist eine Arbeitstiefe, keine rechtliche Modulpflicht. Für Unternehmen mit mehr als 250 Beschäftigten dient der VSME nur als Orientierung; EFRAG hat ihn für diese Gruppe nicht erprobt.</p></fieldset>
+    </section>
+
+    <section class="assessment-step" data-step-panel="3" aria-labelledby="step3Title" hidden>
+      <div class="step-hero"><div><p class="eyebrow">Schritt 3 von 7 · Informationsbedarf</p><h1 id="step3Title">Wer fragt welche ESG-Informationen an?</h1></div><p>Aus externem Druck werden konkrete, nachvollziehbare Arbeitsprioritäten – ohne daraus gesetzliche Pflichten abzuleiten.</p></div>
+      <fieldset class="question-card" data-required-group="requesters"><legend>Welche Parteien fragen ESG-Informationen an oder werden dies wahrscheinlich tun? <span>Mehrfachauswahl möglich</span></legend><div class="choice-grid dense">
+        <label class="option-card"><input type="checkbox" name="requesters" value="major_customers"><span>Große Kunden</span></label><label class="option-card"><input type="checkbox" name="requesters" value="smaller_customers"><span>Kleinere Kunden</span></label><label class="option-card"><input type="checkbox" name="requesters" value="parent_company"><span>Muttergesellschaft / Gruppe</span></label><label class="option-card"><input type="checkbox" name="requesters" value="banks_lenders"><span>Banken / Kreditgeber</span></label><label class="option-card"><input type="checkbox" name="requesters" value="investors"><span>Investoren</span></label><label class="option-card"><input type="checkbox" name="requesters" value="insurers"><span>Versicherer</span></label><label class="option-card"><input type="checkbox" name="requesters" value="public_procurement"><span>Öffentliche Beschaffung</span></label><label class="option-card"><input type="checkbox" name="requesters" value="suppliers"><span>Lieferanten</span></label><label class="option-card"><input type="checkbox" name="requesters" value="employees"><span>Beschäftigte / Bewerbende</span></label><label class="option-card"><input type="checkbox" name="requesters" value="none"><span>Aktuell keine Anfragen</span></label><label class="option-card"><input type="checkbox" name="requesters" value="not_sure"><span>Nicht sicher</span></label>
+      </div></fieldset>
+      <fieldset class="question-card"><legend>Welche Themen wurden bereits angefragt? <span>Mehrfachauswahl möglich</span></legend><div class="chip-grid" id="requestedTopics">
+        <label><input type="checkbox" value="energy"><span>Energieverbrauch</span></label><label><input type="checkbox" value="emissions"><span>Treibhausgasemissionen</span></label><label><input type="checkbox" value="climate"><span>Klimarisiken oder -ziele</span></label><label><input type="checkbox" value="waste_water"><span>Abfall und Wasser</span></label><label><input type="checkbox" value="environmental_policies"><span>Umweltrichtlinien</span></label><label><input type="checkbox" value="workforce"><span>Belegschaftsdaten</span></label><label><input type="checkbox" value="health_safety"><span>Gesundheit und Sicherheit</span></label><label><input type="checkbox" value="human_rights"><span>Menschenrechte / Lieferkette</span></label><label><input type="checkbox" value="governance"><span>Governance und Compliance</span></label><label><input type="checkbox" value="certificates"><span>Zertifikate / Managementsysteme</span></label><label><input type="checkbox" value="supplier_standards"><span>Lieferantenstandards</span></label><label><input type="checkbox" value="other"><span>Sonstiges</span></label><label><input type="checkbox" value="not_sure"><span>Nicht sicher</span></label>
+      </div></fieldset>
+      <div id="requestProfilePreview" class="insight-card" aria-live="polite"></div>
+    </section>
+
+    <section class="assessment-step" data-step-panel="4" aria-labelledby="step4Title" hidden>
+      <div class="step-hero"><div><p class="eyebrow">Schritt 4 von 7 · VSME-Readiness</p><h1 id="step4Title">Sind Informationen verfügbar, belegt und klar zugeordnet?</h1></div><p>Bearbeiten Sie Relevanz und Datenverfügbarkeit für jede angezeigte Angabe. Nachweise, Verantwortung und Prozess dürfen Sie mit „Nicht sicher“ beantworten.</p></div>
+      <div class="disclosure-toolbar"><div><strong id="scopeLabel">20 Angaben</strong><span id="disclosureCompletion">0 vollständig eingeschätzt</span></div><button id="expandAllBtn" class="secondary-button" type="button">Alle öffnen</button></div>
+      <div id="disclosureList" class="disclosure-list"></div>
+    </section>
+
+    <section class="assessment-step" data-step-panel="5" aria-labelledby="step5Title" hidden>
+      <div class="step-hero"><div><p class="eyebrow">Schritt 5 von 7 · Nachweise und Rollen</p><h1 id="step5Title">Wo liegen Informationen – und wer hält die Fäden zusammen?</h1></div><p>Hier werden übergreifende Engpässe sichtbar, die nicht mit einer einzelnen Kennzahl gelöst werden.</p></div>
+      <fieldset class="question-card"><legend>Wo werden ESG-bezogene Dokumente derzeit abgelegt? <span>Mehrfachauswahl möglich</span></legend><div class="chip-grid" id="documentStorage">
+        <label><input type="checkbox" value="network"><span>Netzlaufwerk</span></label><label><input type="checkbox" value="cloud"><span>Cloud-Speicher</span></label><label><input type="checkbox" value="accounting"><span>Buchhaltungssystem</span></label><label><input type="checkbox" value="hr"><span>HR-System</span></label><label><input type="checkbox" value="energy"><span>Energiemanagementsystem</span></label><label><input type="checkbox" value="employee_folders"><span>Persönliche Ablagen</span></label><label><input type="checkbox" value="email"><span>E-Mail-Postfächer</span></label><label><input type="checkbox" value="paper"><span>Papierakten</span></label><label><input type="checkbox" value="no_central"><span>Keine zentrale Ablage</span></label><label><input type="checkbox" value="other"><span>Sonstiges</span></label>
+      </div></fieldset>
+      <div class="form-grid">
+        <fieldset class="question-card compact"><legend>Gibt es eine zentrale ESG-Datenverantwortung?</legend><div class="radio-list"><label><input type="radio" name="centralOwner" value="clear"><span>Ja, klar zugewiesen</span></label><label><input type="radio" name="centralOwner" value="shared"><span>Zwischen Bereichen geteilt</span></label><label><input type="radio" name="centralOwner" value="informal"><span>Nicht formell zugewiesen</span></label><label><input type="radio" name="centralOwner" value="no"><span>Nein</span></label></div></fieldset>
+        <fieldset class="question-card compact"><legend>Größtes aktuelles Hindernis</legend><div class="radio-list"><label><input type="radio" name="largestObstacle" value="missing_data"><span>Daten fehlen</span></label><label><input type="radio" name="largestObstacle" value="fragmented"><span>Daten sind fragmentiert</span></label><label><input type="radio" name="largestObstacle" value="missing_evidence"><span>Nachweise fehlen</span></label><label><input type="radio" name="largestObstacle" value="unclear_roles"><span>Verantwortung ist unklar</span></label><label><input type="radio" name="largestObstacle" value="capacity"><span>Zeit oder Kapazität fehlt</span></label><label><input type="radio" name="largestObstacle" value="relevance"><span>Unklar, welche Informationen zählen</span></label><label><input type="radio" name="largestObstacle" value="methods"><span>Berechnungsmethoden sind unklar</span></label><label><input type="radio" name="largestObstacle" value="no_process"><span>Kein zentraler Prozess</span></label><label><input type="radio" name="largestObstacle" value="other"><span>Sonstiges</span></label></div></fieldset>
+      </div>
+      <fieldset class="question-card"><legend>Welche Funktionen sind beteiligt? <span>Mehrfachauswahl möglich</span></legend><div class="chip-grid" id="functionsInvolved">
+        <label><input type="checkbox" value="management"><span>Geschäftsführung</span></label><label><input type="checkbox" value="finance"><span>Finance / Buchhaltung</span></label><label><input type="checkbox" value="operations"><span>Operations</span></label><label><input type="checkbox" value="facility"><span>Facility Management</span></label><label><input type="checkbox" value="hr"><span>HR</span></label><label><input type="checkbox" value="procurement"><span>Einkauf</span></label><label><input type="checkbox" value="quality"><span>Qualitätsmanagement</span></label><label><input type="checkbox" value="environment"><span>Umweltmanagement</span></label><label><input type="checkbox" value="legal"><span>Legal / Compliance</span></label><label><input type="checkbox" value="sales"><span>Vertrieb / Ausschreibungen</span></label><label><input type="checkbox" value="advisor"><span>Externe Beratung</span></label><label><input type="checkbox" value="other"><span>Sonstiges</span></label>
+      </div></fieldset>
+    </section>
+
+    <section class="assessment-step" data-step-panel="6" aria-labelledby="step6Title" hidden>
+      <div class="step-hero"><div><p class="eyebrow">Schritt 6 von 7 · Prioritäten</p><h1 id="step6Title">Was ist in den nächsten sechs Monaten realistisch?</h1></div><p>Die Auswahl steuert die empfohlenen nächsten Schritte – sie ist keine formale Wesentlichkeitsanalyse.</p></div>
+      <fieldset class="question-card"><legend>Welcher interne Aufwand ist realistisch?</legend><div class="radio-list horizontal effort-list"><label><input type="radio" name="effort" value="limited"><span><strong>Begrenzt</strong><small>Eine verantwortliche Person, wenig Zeit</small></span></label><label><input type="radio" name="effort" value="moderate"><span><strong>Moderat</strong><small>Mehrere Bereiche können beitragen</small></span></label><label><input type="radio" name="effort" value="high"><span><strong>Hoch</strong><small>Managementgestütztes Projekt ist möglich</small></span></label><label><input type="radio" name="effort" value="not_sure"><span><strong>Nicht sicher</strong><small>Kapazität muss noch geklärt werden</small></span></label></div></fieldset>
+      <fieldset class="question-card"><legend>Welches Ergebnis möchten Sie erreichen? <span>Mehrfachauswahl möglich</span></legend><div class="choice-grid dense">
+        <label class="option-card"><input type="checkbox" name="desiredOutcomes" value="customer_response"><span>Konkrete Kundenanfrage beantworten</span></label><label class="option-card"><input type="checkbox" name="desiredOutcomes" value="standard_package"><span>Standardisiertes ESG-Datenpaket</span></label><label class="option-card"><input type="checkbox" name="desiredOutcomes" value="financing"><span>Finanzierungsfähigkeit verbessern</span></label><label class="option-card"><input type="checkbox" name="desiredOutcomes" value="tenders"><span>Auf Ausschreibungen vorbereiten</span></label><label class="option-card"><input type="checkbox" name="desiredOutcomes" value="annual_process"><span>Jährlichen Datenprozess aufbauen</span></label><label class="option-card"><input type="checkbox" name="desiredOutcomes" value="identify_gaps"><span>Größte ESG-Datenlücken erkennen</span></label><label class="option-card"><input type="checkbox" name="desiredOutcomes" value="future_reporting"><span>Basis für künftige Berichterstattung</span></label>
+      </div></fieldset>
+      <div class="ready-panel"><span>Bereit für die Auswertung?</span><strong>Das Ergebnis bleibt ohne Kontaktdaten vollständig sichtbar.</strong><p>Sie erhalten vier getrennte Reifegrad-Dimensionen, relevante Informationsbereiche und eine kompakte Checkliste aller geprüften VSME-Angaben.</p></div>
+    </section>
+
+    <section class="assessment-step results-step" data-step-panel="7" aria-labelledby="step7Title" hidden>
+      <div class="results-hero"><div><p class="eyebrow">Schritt 7 von 7 · Ergebnis</p><h1 id="step7Title">VSME-Readiness Checkliste</h1><p id="resultSummary">Ihre Angaben werden ausgewertet.</p></div><div class="result-meta"><span>Assessment</span><strong id="resultDate"></strong></div></div>
+      <section class="result-block" aria-labelledby="dimensionTitle"><div class="result-heading"><div><p class="eyebrow">Ausgangslage</p><h2 id="dimensionTitle">Vier getrennte Readiness-Dimensionen</h2></div><p>Keine Compliance-Punktzahl: Jede Dimension zeigt einen anderen operativen Engpass.</p></div><div id="dimensionGrid" class="dimension-grid"></div></section>
+      <section class="result-block" aria-labelledby="checklistTitle"><div class="result-heading"><div><p class="eyebrow">Vollständige Übersicht</p><h2 id="checklistTitle">Alle VSME-Angaben</h2></div><p>Relevanz, Datenstand, Nachweise, Verantwortung und Prozessreife kompakt mit Ihren Eingaben dargestellt.</p></div><div id="resultChecklist" class="result-checklist"></div></section>
+      <section class="result-block" aria-labelledby="priorityTitle"><div class="result-heading"><div><p class="eyebrow">Fokus</p><h2 id="priorityTitle">Relevanteste Informationsbereiche</h2></div><p>Priorisiert nach Ihrem Kontext, externer Nachfrage, Branche und aktuellem Readiness-Gap.</p></div><div id="priorityList" class="priority-list"></div></section>
+      <section id="consultingSection" class="consulting-section" aria-labelledby="consultingTitle"><div><p class="eyebrow">Optionaler nächster Schritt</p><h2 id="consultingTitle">Wo gezielte Unterstützung Aufwand und Unsicherheit reduzieren kann</h2><p>Diese Hinweise erscheinen nur, wenn Ihre Antworten einen konkreten Bedarf erkennen lassen.</p></div><div id="serviceRecommendations" class="service-recommendations"></div></section>
+      <section class="export-section" aria-labelledby="exportTitle"><div><p class="eyebrow">Export</p><h2 id="exportTitle">Ihr Ergebnis gehört Ihnen</h2><p>Im Druckdialog können Sie „Als PDF speichern“ wählen. Alle Inhalte werden clientseitig erzeugt.</p></div><div class="export-grid"><button id="printBtn" type="button">Drucken / als PDF speichern</button></div></section>
+      <section class="contact-section-assessment" aria-labelledby="contactTitle"><div><p class="eyebrow">Readiness Review</p><h2 id="contactTitle">Ergebnis fokussiert besprechen</h2><p>Optional: Erstellen Sie eine E-Mail mit der vollständigen Übersicht Ihrer Eingaben. Erst dadurch verlassen eingegebene Kontaktdaten Ihren Browser.</p></div><form id="contactForm"><div class="contact-fields"><label>Name<input id="contactName" name="name" required autocomplete="name"></label><label>Unternehmen<input id="contactCompany" name="company" required autocomplete="organization"></label><label>E-Mail<input id="contactEmail" name="email" type="email" required autocomplete="email"></label><label>Telefon <span>optional</span><input id="contactPhone" name="phone" type="tel" autocomplete="tel"></label></div><label>Nachricht<textarea id="contactMessage" name="message" rows="12"></textarea></label><label class="consent-check"><input id="contactConsent" type="checkbox" required><span>Ich möchte mein VSME-Readiness-Ergebnis besprechen.</span></label><button type="submit">Readiness Review anfragen</button></form></section>
+      <aside class="result-disclaimer">Diese Readiness-Einschätzung beruht auf Selbstauskünften und dient der internen ESG-Vorbereitung. Sie ist keine Rechts-, Prüfungs-, Assurance- oder Compliance-Beratung.</aside>
+    </section>
+
+    <nav class="step-actions" aria-label="Schrittnavigation"><button id="backBtn" class="secondary-button" type="button" hidden>Zurück</button><button id="nextBtn" type="button">Weiter zu Unternehmensprofil</button></nav>
+    <button id="resetBtn" class="reset-link" type="button">Assessment neu starten und lokale Daten löschen</button>
+  </main>
+
+  <template id="disclosureTemplate">
+    <article class="disclosure-card">
+      <button class="disclosure-toggle" type="button" aria-expanded="false"><span class="disclosure-identity"><b class="disclosure-code"></b><span><small class="disclosure-category"></small><strong class="disclosure-title"></strong></span></span><span class="disclosure-state">Noch offen</span><span class="chevron" aria-hidden="true">⌄</span></button>
+      <div class="disclosure-body" hidden>
+        <p class="disclosure-description"></p>
+        <div class="assessment-fields">
+          <label>Ist diese Angabe derzeit relevant?<select class="field-relevance"><option value="">Bitte wählen</option><option value="clearly">Klar relevant</option><option value="potentially">Potenziell relevant</option><option value="not_relevant">Derzeit nicht relevant</option><option value="not_sure">Nicht sicher</option></select></label>
+          <label>Ist die zugrunde liegende Information verfügbar?<select class="field-availability"><option value="">Bitte wählen</option><option value="complete_current">Vollständig und aktuell</option><option value="partially_available">Teilweise verfügbar</option><option value="fragmented">Verfügbar, aber fragmentiert</option><option value="not_available">Nicht verfügbar</option><option value="not_sure">Nicht sicher</option></select></label>
+          <label>Ist die Information durch auffindbare Nachweise belegt?<select class="field-evidence"><option value="">Bitte wählen</option><option value="documented_retrievable">Dokumentiert und leicht auffindbar</option><option value="exists_scattered">Vorhanden, aber verstreut</option><option value="incomplete">Unvollständig</option><option value="not_available">Kein Nachweis verfügbar</option><option value="not_sure">Nicht sicher</option></select></label>
+          <label>Gibt es eine klar verantwortliche Person oder Funktion?<select class="field-ownership"><option value="">Bitte wählen</option><option value="clearly_assigned">Klar zugewiesen</option><option value="informally_assigned">Informell zugewiesen</option><option value="multiple_departments_no_lead">Mehrere Bereiche, keine Federführung</option><option value="no_owner">Nicht zugewiesen</option><option value="not_sure">Nicht sicher</option></select></label>
+          <label>Gibt es einen wiederholbaren Erfassungsprozess?<select class="field-process"><option value="">Bitte wählen</option><option value="documented_process">Etabliert und dokumentiert</option><option value="informal_process">Vorhanden, aber informell</option><option value="ad_hoc">Nur ad hoc</option><option value="no_process">Kein Prozess</option><option value="not_sure">Nicht sicher</option></select></label>
+        </div>
+        <label class="notes-label">Kontext, Datenquellen, Dokumente oder offene Fragen <span>optional</span><textarea class="field-notes" rows="3"></textarea></label>
+        <details class="guidance-panel"><summary>Mögliche Nachweise und erste Aktion</summary><div><p><strong>Nachweise:</strong> <span class="guidance-evidence"></span></p><p><strong>Typische Verantwortung:</strong> <span class="guidance-owner"></span></p><p><strong>Pragmatischer Start:</strong> <span class="guidance-action"></span></p></div></details>
+        <details class="confidence-panel" hidden><summary>Datenvertrauen optional prüfen</summary><p>Diese Detailprüfung verbessert die Verlässlichkeit, fließt aber nicht als eigener Compliance-Score ein.</p><div class="confidence-grid"></div></details>
+      </div>
+    </article>
+  </template>
+
+  <script src="assessment-data.js"></script>
+  <script src="assessment.js"></script>
+</body>
+</html>
