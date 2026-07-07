@@ -656,6 +656,217 @@
     return lines.join("\n");
   }
 
+  function excelXmlEscape(value) {
+    return String(value ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&apos;");
+  }
+
+  function excelColumnName(index) {
+    let value = index + 1;
+    let name = "";
+    while (value > 0) {
+      value -= 1;
+      name = String.fromCharCode(65 + (value % 26)) + name;
+      value = Math.floor(value / 26);
+    }
+    return name;
+  }
+
+  function excelCell(value, style = 5) {
+    return { value, style };
+  }
+
+  function excelRow(values, style = 5, height = null) {
+    return { cells: values.map(value => value && typeof value === "object" && Object.hasOwn(value, "value") ? value : excelCell(value, style)), height };
+  }
+
+  function excelWorksheetXml({ rows, widths, merges = [], freezeRows = 0, autoFilter = "" }) {
+    const maxColumns = widths.length;
+    const dimension = `A1:${excelColumnName(maxColumns - 1)}${Math.max(1, rows.length)}`;
+    const columns = widths.map((width, index) => `<col min="${index + 1}" max="${index + 1}" width="${width}" customWidth="1"/>`).join("");
+    const sheetRows = rows.map((row, rowIndex) => {
+      const rowNumber = rowIndex + 1;
+      const cells = row.cells.map((cell, columnIndex) => {
+        if (cell === null || cell === undefined) return "";
+        const reference = `${excelColumnName(columnIndex)}${rowNumber}`;
+        const style = Number.isInteger(cell.style) ? cell.style : 5;
+        if (typeof cell.value === "number" && Number.isFinite(cell.value)) return `<c r="${reference}" s="${style}" t="n"><v>${cell.value}</v></c>`;
+        return `<c r="${reference}" s="${style}" t="inlineStr"><is><t xml:space="preserve">${excelXmlEscape(cell.value)}</t></is></c>`;
+      }).join("");
+      return `<row r="${rowNumber}"${row.height ? ` ht="${row.height}" customHeight="1"` : ""}>${cells}</row>`;
+    }).join("");
+    const pane = freezeRows ? `<pane ySplit="${freezeRows}" topLeftCell="A${freezeRows + 1}" activePane="bottomLeft" state="frozen"/><selection pane="bottomLeft" activeCell="A${freezeRows + 1}" sqref="A${freezeRows + 1}"/>` : "<selection activeCell=\"A1\" sqref=\"A1\"/>";
+    const mergeXml = merges.length ? `<mergeCells count="${merges.length}">${merges.map(reference => `<mergeCell ref="${reference}"/>`).join("")}</mergeCells>` : "";
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetPr><pageSetUpPr fitToPage="1"/></sheetPr><dimension ref="${dimension}"/><sheetViews><sheetView showGridLines="0" workbookViewId="0">${pane}</sheetView></sheetViews><sheetFormatPr defaultRowHeight="15"/><cols>${columns}</cols><sheetData>${sheetRows}</sheetData>${autoFilter ? `<autoFilter ref="${autoFilter}"/>` : ""}${mergeXml}<pageMargins left="0.3" right="0.3" top="0.5" bottom="0.5" header="0.2" footer="0.2"/><pageSetup orientation="landscape" fitToWidth="1" fitToHeight="0"/></worksheet>`;
+  }
+
+  function excelStylesXml() {
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+  <fonts count="5">
+    <font><sz val="10"/><color rgb="FF203A33"/><name val="Aptos"/><family val="2"/></font>
+    <font><b/><sz val="16"/><color rgb="FFFFFFFF"/><name val="Aptos Display"/><family val="2"/></font>
+    <font><b/><sz val="10"/><color rgb="FFFFFFFF"/><name val="Aptos"/><family val="2"/></font>
+    <font><b/><sz val="10"/><color rgb="FFC96942"/><name val="Aptos"/><family val="2"/></font>
+    <font><b/><sz val="10"/><color rgb="FF173F36"/><name val="Aptos"/><family val="2"/></font>
+  </fonts>
+  <fills count="11">
+    <fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill>
+    <fill><patternFill patternType="solid"><fgColor rgb="FF173F36"/><bgColor indexed="64"/></patternFill></fill>
+    <fill><patternFill patternType="solid"><fgColor rgb="FFC96942"/><bgColor indexed="64"/></patternFill></fill>
+    <fill><patternFill patternType="solid"><fgColor rgb="FFEEF3EF"/><bgColor indexed="64"/></patternFill></fill>
+    <fill><patternFill patternType="solid"><fgColor rgb="FFF6F1E6"/><bgColor indexed="64"/></patternFill></fill>
+    <fill><patternFill patternType="solid"><fgColor rgb="FFDDEDE6"/><bgColor indexed="64"/></patternFill></fill>
+    <fill><patternFill patternType="solid"><fgColor rgb="FFDCEBF2"/><bgColor indexed="64"/></patternFill></fill>
+    <fill><patternFill patternType="solid"><fgColor rgb="FFF5DDD6"/><bgColor indexed="64"/></patternFill></fill>
+    <fill><patternFill patternType="solid"><fgColor rgb="FFF5E8D2"/><bgColor indexed="64"/></patternFill></fill>
+    <fill><patternFill patternType="solid"><fgColor rgb="FFE3E9E6"/><bgColor indexed="64"/></patternFill></fill>
+  </fills>
+  <borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FFCAD6D1"/></left><right style="thin"><color rgb="FFCAD6D1"/></right><top style="thin"><color rgb="FFCAD6D1"/></top><bottom style="thin"><color rgb="FFCAD6D1"/></bottom><diagonal/></border></borders>
+  <cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
+  <cellXfs count="12">
+    <xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>
+    <xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf>
+    <xf numFmtId="0" fontId="2" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf>
+    <xf numFmtId="0" fontId="2" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment vertical="center" wrapText="1"/></xf>
+    <xf numFmtId="0" fontId="4" fillId="4" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf>
+    <xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1" applyAlignment="1"><alignment vertical="top" wrapText="1"/></xf>
+    <xf numFmtId="0" fontId="4" fillId="6" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+    <xf numFmtId="0" fontId="4" fillId="7" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+    <xf numFmtId="0" fontId="4" fillId="8" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+    <xf numFmtId="0" fontId="4" fillId="9" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+    <xf numFmtId="0" fontId="4" fillId="10" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+    <xf numFmtId="0" fontId="3" fillId="4" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>
+  </cellXfs>
+  <cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles><dxfs count="0"/><tableStyles count="0" defaultTableStyle="TableStyleMedium2" defaultPivotStyle="PivotStyleLight16"/>
+</styleSheet>`;
+  }
+
+  function excelInputRows() {
+    const rows = [];
+    let section = "Allgemein";
+    buildSummaryText().split("\n").forEach(line => {
+      const text = line.trim();
+      if (!text || text.startsWith("VSME Readiness-Check") || text.startsWith("Diese Readiness-Einschätzung")) return;
+      if (/^\d+\./.test(text)) {
+        section = text;
+        return;
+      }
+      if (section.startsWith("4.") || section.startsWith("7.")) return;
+      const separator = text.indexOf(":");
+      rows.push(separator > -1 ? [section.replace(/^\d+\.\s*/, ""), text.slice(0, separator), text.slice(separator + 1).trim()] : [section.replace(/^\d+\.\s*/, ""), "Angabe", text]);
+    });
+    return rows;
+  }
+
+  function excelStatusStyle(answer, isInScope) {
+    if (!isInScope) return 10;
+    if (answer.relevance === "not_relevant") return 10;
+    const key = disclosureReadiness(answer).key;
+    return ({ strong: 6, partial: 7, gaps: 8, visibility: 9, clarify: 9 })[key] || 10;
+  }
+
+  function buildExcelSheets() {
+    const result = state.results;
+    const profile = state.answers.profile;
+    const sectorLabel = profile.sector === "other" ? profile.sectorOther || "Sonstige" : DATA.sectorOptions.find(([value]) => value === profile.sector)?.[1] || "Keine Angabe";
+    const scopeLabel = profile.assessmentScope === "basic" ? "Basis-Modul B1–B11" : "Basis + Comprehensive B1–B11 und C1–C9";
+    const contextLabels = { customer_requests: "Kunden- oder Lieferkettenanfragen", bank_financing: "Finanzierung", public_tenders: "Ausschreibungen", internal_data_management: "Interne ESG-Steuerung", future_reporting: "Künftige Berichtserwartungen", parent_company: "Muttergesellschaft oder Gruppe", other: state.answers.contextOther || "Anderer Anlass" };
+    const contexts = state.answers.assessmentContext.map(value => contextLabels[value] || value).join(", ") || "Keine Angabe";
+    const services = result.consulting.length ? result.consulting : ["Aktuell keine externe Unterstützung aus den Antworten abgeleitet"];
+    const blankSix = () => Array.from({ length: 6 }, () => excelCell("", 1));
+    const overviewRows = [
+      excelRow([excelCell("VSME-Readiness Check\nManagementübersicht · lokal aus den Assessment-Angaben erzeugt", 1), ...blankSix().slice(1)], 1, 42),
+      excelRow(blankSix(), 1, 18), excelRow(["", "", "", "", "", ""]),
+      excelRow([excelCell("Assessment", 2), excelCell("Unternehmensprofil", 2), "", excelCell("Optionale Unterstützung", 2), excelCell("", 2), excelCell("", 2)]),
+      excelRow([excelCell("Datum", 4), new Date(result.generatedAt).toLocaleDateString("de-DE"), "", services[0] || "", "", ""]),
+      excelRow([excelCell("Mitarbeiter", 4), profile.employeeCount === "" ? "Keine Angabe" : Number(profile.employeeCount), "", services[1] || "", "", ""]),
+      excelRow([excelCell("Branche", 4), sectorLabel, "", "Nur angezeigt, wenn die Antworten den Bedarf stützen.", "", ""]),
+      excelRow([excelCell("Prüftiefe", 4), scopeLabel, "", "", "", ""]),
+      excelRow(["", "", "", "", "", ""]),
+      excelRow([excelCell("Readiness-Dimension", 3), excelCell("Einordnung", 3), "", excelCell("Assessment-Kontext", 3), excelCell("", 3), excelCell("", 3)]),
+      ...result.dimensions.map((dimension, index) => excelRow([dimension.title, excelCell(dimension.label, ({ strong: 6, partial: 7, gaps: 8, visibility: 9 })[dimension.key] || 10), "", index === 0 ? contexts : "", "", ""]))
+    ];
+
+    const checklistRows = DATA.disclosures.map(item => {
+      const answer = state.answers.disclosures[item.id];
+      const isInScope = item.module === "basic" || profile.assessmentScope === "comprehensive";
+      let status = "Nicht geprüft";
+      if (isInScope && answer.relevance === "not_relevant") status = "Derzeit nicht relevant";
+      else if (isInScope && answer.relevance) status = disclosureReadiness(answer).label;
+      const confidence = DATA.confidenceQuestions.filter(([key]) => answer.confidence[key]).map(([key, label]) => `${label} ${({ yes: "Ja", partly: "Teilweise", no: "Nein", not_sure: "Nicht sicher" })[answer.confidence[key]]}`).join("; ");
+      const note = [answer.notes.trim(), confidence ? `Datenvertrauen: ${confidence}` : ""].filter(Boolean).join(" | ");
+      return excelRow([
+        excelCell(item.id, 11), item.title,
+        answer.relevance ? optionText("relevance", answer.relevance) : "Nicht bewertet",
+        answer.availability ? optionText("availability", answer.availability) : "Nicht bewertet",
+        answer.evidence ? optionText("evidence", answer.evidence) : "Nicht bewertet",
+        answer.ownership ? optionText("ownership", answer.ownership) : "Nicht bewertet",
+        answer.process ? optionText("process", answer.process) : "Nicht bewertet",
+        excelCell(status, excelStatusStyle(answer, isInScope)), note
+      ]);
+    });
+    const checklist = [
+      excelRow([excelCell("VSME-Readiness Checkliste\nAlle Angaben B1–B11 und C1–C9 mit den im Tool erfassten Antworten", 1), ...Array.from({ length: 8 }, () => excelCell("", 1))], 1, 42),
+      excelRow(Array.from({ length: 9 }, () => excelCell("", 1)), 1, 18), excelRow(Array(9).fill("")),
+      excelRow(["Code", "VSME-Angabe", "Relevanz", "Daten", "Nachweise", "Verantwortung", "Prozess", "Status", "Notiz / Datenvertrauen"], 3),
+      ...checklistRows
+    ];
+
+    const priorityRows = result.priorities.map(item => excelRow([item.priorityLabel, excelCell(item.id, 11), DATA.disclosures.find(disclosure => disclosure.id === item.id)?.title || item.id, item.status, item.mainGap, item.action]));
+    const priorities = [
+      excelRow([excelCell("Priorisierte Informationsbereiche\nAus Kontext, externer Nachfrage, Branche und Readiness-Gap abgeleitet", 1), ...Array.from({ length: 5 }, () => excelCell("", 1))], 1, 42),
+      excelRow(Array.from({ length: 6 }, () => excelCell("", 1)), 1, 18), excelRow(Array(6).fill("")),
+      excelRow(["Priorität", "Code", "Informationsbereich", "Status", "Hauptlücke", "Nächste Aktion"], 3),
+      ...priorityRows
+    ];
+
+    const inputData = excelInputRows();
+    const inputs = [
+      excelRow([excelCell("Assessment-Eingaben\nVollständige, nachvollziehbare Übersicht der im Browser erfassten Angaben", 1), excelCell("", 1), excelCell("", 1)], 1, 42),
+      excelRow([excelCell("", 1), excelCell("", 1), excelCell("", 1)], 1, 18), excelRow(["", "", ""]),
+      excelRow(["Bereich", "Feld", "Eingabe"], 3),
+      ...inputData.map(values => excelRow(values))
+    ];
+    return [
+      { name: "Übersicht", rows: overviewRows, widths: [27, 34, 4, 27, 22, 22], merges: ["A1:F2", "D4:F4", "D10:F10"], freezeRows: 2 },
+      { name: "VSME-Checkliste", rows: checklist, widths: [8, 36, 24, 24, 27, 27, 24, 23, 46], merges: ["A1:I2"], freezeRows: 4, autoFilter: `A4:I${checklist.length}` },
+      { name: "Prioritäten", rows: priorities, widths: [23, 8, 36, 24, 40, 48], merges: ["A1:F2"], freezeRows: 4, autoFilter: `A4:F${priorities.length}` },
+      { name: "Eingaben", rows: inputs, widths: [28, 34, 72], merges: ["A1:C2"], freezeRows: 4, autoFilter: `A4:C${inputs.length}` }
+    ];
+  }
+
+  async function exportExcel() {
+    if (!window.JSZip) {
+      refs.saveStatus.textContent = "Excel-Export nicht verfügbar";
+      return;
+    }
+    const sheets = buildExcelSheets();
+    const zip = new window.JSZip();
+    const contentOverrides = sheets.map((_, index) => `<Override PartName="/xl/worksheets/sheet${index + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("");
+    zip.file("[Content_Types].xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${contentOverrides}<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/><Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/></Types>`);
+    zip.folder("_rels").file(".rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/></Relationships>`);
+    const sheetEntries = sheets.map((sheet, index) => `<sheet name="${excelXmlEscape(sheet.name)}" sheetId="${index + 1}" r:id="rId${index + 1}"/>`).join("");
+    zip.folder("xl").file("workbook.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><bookViews><workbookView xWindow="0" yWindow="0" windowWidth="24000" windowHeight="14000"/></bookViews><sheets>${sheetEntries}</sheets><calcPr calcId="191029" fullCalcOnLoad="1"/></workbook>`);
+    const sheetRelationships = sheets.map((_, index) => `<Relationship Id="rId${index + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${index + 1}.xml"/>`).join("");
+    zip.folder("xl").folder("_rels").file("workbook.xml.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheetRelationships}<Relationship Id="rId${sheets.length + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`);
+    zip.folder("xl").file("styles.xml", excelStylesXml());
+    const worksheetFolder = zip.folder("xl").folder("worksheets");
+    sheets.forEach((sheet, index) => worksheetFolder.file(`sheet${index + 1}.xml`, excelWorksheetXml(sheet)));
+    const now = new Date().toISOString();
+    zip.folder("docProps").file("core.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>VSME-Readiness Ergebnis</dc:title><dc:creator>Dammann Sustainability &amp; Energy</dc:creator><cp:lastModifiedBy>Dammann Sustainability &amp; Energy</cp:lastModifiedBy><dcterms:created xsi:type="dcterms:W3CDTF">${now}</dcterms:created><dcterms:modified xsi:type="dcterms:W3CDTF">${now}</dcterms:modified></cp:coreProperties>`);
+    zip.folder("docProps").file("app.xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"><Application>Dammann Sustainability &amp; Energy</Application><DocSecurity>0</DocSecurity><ScaleCrop>false</ScaleCrop><HeadingPairs><vt:vector size="2" baseType="variant"><vt:variant><vt:lpstr>Arbeitsblätter</vt:lpstr></vt:variant><vt:variant><vt:i4>${sheets.length}</vt:i4></vt:variant></vt:vector></HeadingPairs><TitlesOfParts><vt:vector size="${sheets.length}" baseType="lpstr">${sheets.map(sheet => `<vt:lpstr>${excelXmlEscape(sheet.name)}</vt:lpstr>`).join("")}</vt:vector></TitlesOfParts><Company>Dammann Sustainability &amp; Energy</Company><AppVersion>16.0300</AppVersion></Properties>`);
+    const blob = await zip.generateAsync({ type: "blob", mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", compression: "DEFLATE", compressionOptions: { level: 6 } });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `VSME-Readiness-Ergebnis-${new Date().toISOString().slice(0, 10)}.xlsx`;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    state.exportedAt = new Date().toISOString();
+    saveState("Excel-Datei lokal erstellt");
+  }
+
   function initialiseEvents() {
     refs.nextBtn.addEventListener("click", () => {
       if (!validateStep(state.currentStep)) return;
@@ -678,6 +889,7 @@
       window.location.reload();
     });
     document.querySelector("#printBtn").addEventListener("click", () => { state.exportedAt = new Date().toISOString(); saveState(); window.print(); });
+    document.querySelector("#excelBtn").addEventListener("click", exportExcel);
     document.querySelector("#contactMessage").addEventListener("input", event => { event.currentTarget.dataset.edited = "true"; });
     document.querySelector("#contactForm").addEventListener("submit", event => {
       event.preventDefault();
