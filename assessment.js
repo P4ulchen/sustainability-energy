@@ -518,7 +518,7 @@
     const weak = dimensions.filter(dimension => ["gaps", "visibility"].includes(dimension.key));
     const partial = dimensions.filter(dimension => dimension.key === "partial");
     let summary = "Ihr Unternehmen verfügt über eine starke operative Grundlage für die betrachteten ESG-Informationen.";
-    if (weak.length) summary = `Ihre ESG-Datengrundlage weist vor allem bei ${weak.map(item => item.title.toLowerCase()).join(" und ")} Handlungsbedarf auf. Ein klarer Start bei Verantwortung, Nachweisablage und den priorisierten Datenbereichen reduziert Unsicherheit am schnellsten.`;
+    if (weak.length) summary = `Ihre ESG-Datengrundlage weist vor allem bei ${weak.map(item => item.title).join(" und ")} Handlungsbedarf auf. Ein klarer Start bei Verantwortung, Nachweisablage und den priorisierten Datenbereichen reduziert Unsicherheit am schnellsten.`;
     else if (partial.length) summary = `Ihre ESG-Datengrundlage ist teilweise etabliert. ${partial.map(item => item.title).join(" und ")} sollten konsistenter dokumentiert und in einen wiederholbaren Ablauf überführt werden.`;
     document.querySelector("#resultSummary").textContent = summary;
     document.querySelector("#resultDate").textContent = new Date().toLocaleDateString("de-DE");
